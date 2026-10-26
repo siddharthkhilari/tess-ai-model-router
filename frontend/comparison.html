@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TESS AI Router — Multi-Model Comparison</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <span>⚡ TESS AI Router</span>
+      <span class="brand-badge">PBL Prototype</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">AI Router</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/comparison" class="active">Model Comparison</a></li>
+    </ul>
+    <div class="mode-badge">Side-by-Side Benchmark</div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="page-header">
+      <h1>Multi-Model Inference Comparison</h1>
+      <p>Benchmark the exact same prompt across Small, Medium, and Large models simultaneously to observe quality, cost, and latency trade-offs.</p>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>Comparison Benchmark Query</span>
+      </div>
+
+      <div class="presets-container">
+        <button class="preset-chip" onclick="setCompPreset('What is inheritance in Java?')">Preset: Inheritance in Java</button>
+        <button class="preset-chip" onclick="setCompPreset('Explain binary search and provide Java implementation.')">Preset: Binary Search & Java Code</button>
+        <button class="preset-chip" onclick="setCompPreset('Analyze a distributed application architecture and identify possible performance and concurrency problems.')">Preset: Distributed Architecture</button>
+      </div>
+
+      <div class="form-group">
+        <textarea id="compPromptInput" class="form-control" placeholder="Enter a prompt to compare across all model tiers..."></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button id="compareBtn" class="btn btn-primary" onclick="handleCompare()">
+          <span>📊 Run Side-by-Side Comparison</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recommendation Banner -->
+    <div id="recommendationBanner" class="routing-reasons-list" style="display: none; border-left-color: var(--primary);">
+      <h3 style="font-size: 1.05rem; color: #1e293b; margin-bottom: 0.3rem;">
+        Recommended Tier: <span id="recModelName" style="color: var(--primary);">Medium Model</span>
+      </h3>
+      <p id="recReasonText" style="font-size: 0.88rem; color: #475569;"></p>
+    </div>
+
+    <!-- 3-Column Comparison Grid -->
+    <div id="comparisonGrid" class="comparison-grid" style="display: none;">
+      <!-- Populated via JS -->
+    </div>
+  </main>
+
+  <footer>
+    TESS AI Infrastructure Research Prototype • Savitribai Phule Pune University PBL Project
+  </footer>
+
+  <script src="/static/js/comparison.js"></script>
+</body>
+</html>

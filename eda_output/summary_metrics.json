@@ -1,0 +1,33 @@
+{
+    "total_queries": 325,
+    "category_distribution": {
+        "General Question": 82,
+        "Explanation": 58,
+        "Coding - Basic": 50,
+        "Coding - Complex": 41,
+        "Sensitive & Privacy": 36,
+        "Reasoning & Architecture": 32,
+        "Mathematics & Algorithms": 26
+    },
+    "routed_model_distribution": {
+        "Small Model": 129,
+        "Medium Model": 102,
+        "Large Model": 94
+    },
+    "complexity_level_distribution": {
+        "MEDIUM": 131,
+        "LOW": 100,
+        "HIGH": 94
+    },
+    "privacy_level_distribution": {
+        "PUBLIC": 289,
+        "SENSITIVE": 36
+    },
+    "total_routed_cost_inr": 11.87,
+    "total_baseline_cost_inr": 26.0,
+    "total_cost_savings_inr": 14.13,
+    "overall_cost_saving_percentage": 54.35,
+    "average_routed_latency_seconds": 2.171,
+    "baseline_large_latency_seconds": 3.999,
+    "latency_reduction_percentage": 45.72
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TESS AI Router — Analytics Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <span>⚡ TESS AI Router</span>
+      <span class="brand-badge">PBL Prototype</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">AI Router</a></li>
+      <li><a href="/dashboard" class="active">Dashboard</a></li>
+      <li><a href="/comparison">Model Comparison</a></li>
+    </ul>
+    <div class="mode-badge">Live SQLite Metrics</div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="page-header">
+      <h1>Inference Infrastructure Analytics</h1>
+      <p>Real-time telemetry, model tier distribution, latency benchmarks, and cumulative cost savings.</p>
+    </div>
+
+    <!-- Top Summary Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="label">Total Requests</div>
+        <div class="value" id="totalRequests">0</div>
+        <div class="subtext">Processed through router</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Average Latency</div>
+        <div class="value" id="avgLatency">0.0 ms</div>
+        <div class="subtext">End-to-end response time</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Estimated Total Cost</div>
+        <div class="value" id="totalCost">₹0.00</div>
+        <div class="subtext">Actual routed compute cost</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Total Cost Savings</div>
+        <div class="value" id="totalSavings" style="color: var(--success);">₹0.00</div>
+        <div class="subtext" id="savingsPct">0% vs baseline Large model</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Cache Hit Rate</div>
+        <div class="value" id="cacheHitRate">0.0%</div>
+        <div class="subtext" id="cacheHitsSub">0 queries served instantly</div>
+      </div>
+    </div>
+
+    <!-- Charts Grid (Chart.js) -->
+    <div class="charts-grid">
+      <!-- Chart 1: Model Usage -->
+      <div class="chart-card">
+        <div class="card-title">Model Usage Distribution</div>
+        <div class="chart-container">
+          <canvas id="modelUsageChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Latency by Model -->
+      <div class="chart-card">
+        <div class="card-title">Average Latency by Model Tier (ms)</div>
+        <div class="chart-container">
+          <canvas id="latencyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 3: Cost by Model -->
+      <div class="chart-card">
+        <div class="card-title">Cumulative Cost by Model Tier (₹ INR)</div>
+        <div class="chart-container">
+          <canvas id="costChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Complexity Breakdown -->
+      <div class="chart-card">
+        <div class="card-title">Query Complexity Distribution</div>
+        <div class="chart-container">
+          <canvas id="complexityChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Requests Table -->
+    <div class="card">
+      <div class="card-title">
+        <span>Recent Inference Requests History</span>
+        <button class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onclick="loadDashboard()">🔄 Refresh</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Question</th>
+              <th>Task Type</th>
+              <th>Complexity</th>
+              <th>Model</th>
+              <th>Latency</th>
+              <th>Cost</th>
+              <th>Saved</th>
+              <th>Cache</th>
+            </tr>
+          </thead>
+          <tbody id="requestsTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    TESS AI Infrastructure Research Prototype • Savitribai Phule Pune University PBL Project
+  </footer>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

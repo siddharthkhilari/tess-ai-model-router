@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Complexity Analyzer — College PBL Project</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    /* Prominent Complexity Display Styles */
+    .primary-result-container {
+      margin-top: 1.8rem;
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      border: 2px solid transparent;
+      display: none;
+    }
+
+    .result-subheading {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .complexity-hero-badge {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      margin: 0.5rem 0;
+      text-transform: uppercase;
+    }
+
+    .complexity-score-pill {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.35rem 1.2rem;
+      border-radius: 9999px;
+      margin-top: 0.5rem;
+    }
+
+    /* LOW Theme */
+    .theme-low {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+    }
+    .theme-low .complexity-hero-badge {
+      color: #15803d;
+      text-shadow: 0 2px 10px rgba(22, 101, 52, 0.15);
+    }
+    .theme-low .complexity-score-pill {
+      background: #dcfce7;
+      color: #14532d;
+    }
+
+    /* MEDIUM Theme */
+    .theme-medium {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+    .theme-medium .complexity-hero-badge {
+      color: #b45309;
+      text-shadow: 0 2px 10px rgba(180, 83, 9, 0.15);
+    }
+    .theme-medium .complexity-score-pill {
+      background: #fef3c7;
+      color: #78350f;
+    }
+
+    /* HIGH Theme */
+    .theme-high {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+    .theme-high .complexity-hero-badge {
+      color: #b91c1c;
+      text-shadow: 0 2px 10px rgba(185, 28, 28, 0.15);
+    }
+    .theme-high .complexity-score-pill {
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    /* Score Breakdown Table */
+    .breakdown-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      text-align: left;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .breakdown-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .breakdown-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .breakdown-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 0.2rem;
+    }
+
+    .reasons-box {
+      margin-top: 1rem;
+      padding: 0.9rem 1.1rem;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .reasons-box h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.4rem;
+    }
+
+    .reasons-box ul {
+      margin-left: 1.2rem;
+      font-size: 0.85rem;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <span>🔍 Prompt Complexity Analyzer</span>
+      <span class="brand-badge">PBL Project</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Analyzer</a></li>
+      <li><a href="/dashboard">Analytics</a></li>
+    </ul>
+    <div class="mode-badge">Deterministic Rule Engine</div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container" style="max-width: 860px;">
+    <div class="page-header" style="text-align: center; margin-bottom: 2rem;">
+      <h1>Prompt Complexity Analyzer</h1>
+      <p>Deterministic, explainable rule-based scoring engine classifying queries into <strong>LOW</strong>, <strong>MEDIUM</strong>, or <strong>HIGH</strong>.</p>
+    </div>
+
+    <!-- Query Input Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>Enter User Prompt</span>
+        <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">Transparent 0–100 Scoring</span>
+      </div>
+
+      <!-- Quick Preset Chips for Viva Demo -->
+      <label class="form-label">Example Benchmark Prompts:</label>
+      <div class="presets-container">
+        <button class="preset-chip" onclick="setPreset('What is a firewall?')">LOW: What is a firewall?</button>
+        <button class="preset-chip" onclick="setPreset('write java code to print fibonacci series')">MEDIUM: Java Fibonacci Code</button>
+        <button class="preset-chip" onclick="setPreset('Explain how a firewall works and compare stateful and stateless firewalls.')">MEDIUM: Compare Firewalls</button>
+        <button class="preset-chip" onclick="setPreset('Design a secure distributed authentication architecture for a banking system, compare OAuth2, OIDC and SAML, identify vulnerabilities, and propose mitigation strategies.')">HIGH: Distributed Banking Auth</button>
+      </div>
+
+      <div class="form-group">
+        <textarea id="promptInput" class="form-control" rows="4" placeholder="Type or paste any prompt here to analyze its complexity..."></textarea>
+      </div>
+
+      <div class="btn-row" style="justify-content: center;">
+        <button id="analyzeBtn" class="btn btn-primary" style="padding: 0.75rem 2.2rem; font-size: 1rem;" onclick="handleAnalyze()">
+          <span>🔍 Analyze Complexity</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- PRIMARY PROMINENT RESULT -->
+    <div id="primaryResultBox" class="primary-result-container">
+      <div class="result-subheading">COMPLEXITY LEVEL</div>
+      <div id="complexityHeroText" class="complexity-hero-badge">MEDIUM</div>
+      <div id="complexityScorePill" class="complexity-score-pill">Score: 43 / 100</div>
+
+      <!-- Analysis Breakdown & Reasons -->
+      <div class="breakdown-card">
+        <div style="font-weight: 700; font-size: 0.9rem; color: #1e293b;">
+          Transparent Scoring Breakdown (0–100)
+        </div>
+
+        <div class="breakdown-grid">
+          <div class="breakdown-item">
+            <div class="breakdown-label">Prompt Length</div>
+            <div id="bLength" class="breakdown-val">0 / 20</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Instructions</div>
+            <div id="bInstr" class="breakdown-val">0 / 20</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Reasoning Depth</div>
+            <div id="bReason" class="breakdown-val">0 / 25</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Technical Terms</div>
+            <div id="bTech" class="breakdown-val">0 / 20</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">Code / Task</div>
+            <div id="bTask" class="breakdown-val">0 / 15</div>
+          </div>
+        </div>
+
+        <div class="reasons-box">
+          <h4>Detected Characteristics & Why This Score:</h4>
+          <ul id="reasonsList">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    TESS AI Infrastructure Research Prototype • Savitribai Phule Pune University PBL Project
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
